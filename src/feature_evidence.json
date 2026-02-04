@@ -1,0 +1,70 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-replace-the-current-color-sequence-love-memory-game-in-frontend-src-components-valentine-sections-gamesection-tsx-with-a-more-fun-more-interactive-mini-game-that-is-still-simple-to-play-in-browser-and-can-reliably-reach-a-clear-win-condition",
+      "featureTitle": "Replace the current color-sequence “Love Memory Game” in `frontend/src/components/valentine/sections/GameSection.tsx` with a more fun, more interactive mini-game that is still simple to play in-browser and can reliably reach a clear win condition.",
+      "files": [
+        "frontend/src/components/game/MatchPairsMiniGame.tsx",
+        "frontend/src/components/valentine/sections/GameSection.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-when-the-player-wins-the-new-mini-game-immediately-show-celebratory-pop-up-animations-featuring-the-existing-kiss-cupcake-and-bouquet-images-multiple-instances-can-appear-and-then-allow-the-player-to-view-the-rewards-screen",
+      "featureTitle": "When the player wins the new mini-game, immediately show celebratory pop-up animations featuring the existing kiss, cupcake, and bouquet images (multiple instances can appear), and then allow the player to view the rewards screen.",
+      "files": [
+        "frontend/src/components/game/RewardsModal.tsx",
+        "frontend/src/components/game/WinPopups.tsx",
+        "frontend/src/components/valentine/sections/GameSection.tsx",
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-keep-the-existing-won-at-least-once-per-session-behavior-using-usegameprogress-so-that-if-the-viewer-has-already-won-the-game-section-reflects-the-won-state-and-still-lets-them-re-open-rewards-and-replay",
+      "featureTitle": "Keep the existing “won at least once per session” behavior using `useGameProgress` so that if the viewer has already won, the Game section reflects the won state and still lets them re-open rewards and replay.",
+      "files": [
+        "frontend/src/components/game/RewardsModal.tsx",
+        "frontend/src/components/valentine/sections/GameSection.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

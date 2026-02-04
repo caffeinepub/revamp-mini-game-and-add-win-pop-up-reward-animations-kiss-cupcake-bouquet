@@ -1,2 +1,3 @@
-# revamp-mini-game-and-add-win-pop-up-reward-animations-kiss-cupcake-bouquet
-Exported from Caffeine project: Revamp mini-game and add win pop-up reward animations (kiss, cupcake, bouquet)
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

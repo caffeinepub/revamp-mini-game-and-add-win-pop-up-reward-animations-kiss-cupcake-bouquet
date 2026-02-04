@@ -1,0 +1,74 @@
+{
+  "kind": "build_request",
+  "title": "Revamp mini-game and add win pop-up reward animations (kiss, cupcake, bouquet)",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Replace the current color-sequence “Love Memory Game” in `frontend/src/components/valentine/sections/GameSection.tsx` with a more fun, more interactive mini-game that is still simple to play in-browser and can reliably reach a clear win condition.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-3"
+        ],
+        "quotes": [
+          "change the game to something more fun"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The Game section no longer uses the current 4-color sequence-following mechanic.",
+        "The new game has a clearly explained objective and a deterministic win condition that the user can achieve during a normal play session.",
+        "The game supports a “Play Again” flow that fully resets the game state (not just the win flag)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "When the player wins the new mini-game, immediately show celebratory pop-up animations featuring the existing kiss, cupcake, and bouquet images (multiple instances can appear), and then allow the player to view the rewards screen.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-3"
+        ],
+        "quotes": [
+          "and once u win make the kisses pop up and cupcake and bouquet"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On win, animated pop-ups appear using: `/assets/generated/kiss.dim_512x512.png`, `/assets/generated/cupcake.dim_512x512.png`, `/assets/generated/bouquet.dim_512x512.png`.",
+        "The pop-up animation is visibly celebratory (e.g., floating/bursting/bouncing) and does not block the ability to proceed to the rewards UI.",
+        "The “Play Again” action stops/clears any ongoing pop-up animations and resets the UI to a clean starting state."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Keep the existing “won at least once per session” behavior using `useGameProgress` so that if the viewer has already won, the Game section reflects the won state and still lets them re-open rewards and replay.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-3"
+        ],
+        "quotes": [
+          "once u win"
+        ]
+      },
+      "acceptanceCriteria": [
+        "If `sessionStorage` indicates the viewer has won, the Game section shows the won UI state on load (no need to replay to see it).",
+        "The rewards screen remains accessible after a prior win (without replay) and the replay option still works."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not edit files under `frontend/src/components/ui` (compose with existing shadcn components instead).",
+    "Do not edit immutable hook files listed in SYSTEM_CONTEXT (e.g., `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useActor.ts`).",
+    "Do not add new backend canisters or databases; keep the backend single-actor architecture unchanged."
+  ],
+  "nonGoals": [
+    "Do not change the photos/messages owner editor features.",
+    "Do not change Internet Identity authentication behavior.",
+    "Do not introduce real-time multiplayer or WebSocket-based gameplay."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

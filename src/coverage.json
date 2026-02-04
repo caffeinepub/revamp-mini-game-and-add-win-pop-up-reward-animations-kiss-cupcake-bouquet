@@ -1,0 +1,75 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-04T13:52:23.422Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 3,
+    "implemented": 3,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Replace the current color-sequence “Love Memory Game” in `frontend/src/components/valentine/sections/GameSection.tsx` with a more fun, more interactive mini-game that is still simple to play in-browser and can reliably reach a clear win condition.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/game/MatchPairsMiniGame.tsx",
+          "frontend/src/components/valentine/sections/GameSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/game/MatchPairsMiniGame.tsx",
+          "frontend/src/components/valentine/sections/GameSection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "When the player wins the new mini-game, immediately show celebratory pop-up animations featuring the existing kiss, cupcake, and bouquet images (multiple instances can appear), and then allow the player to view the rewards screen.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/game/WinPopups.tsx",
+          "frontend/src/index.css",
+          "frontend/src/components/valentine/sections/GameSection.tsx",
+          "frontend/src/components/game/RewardsModal.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/game/WinPopups.tsx",
+          "frontend/src/index.css",
+          "frontend/src/components/valentine/sections/GameSection.tsx",
+          "frontend/src/components/game/RewardsModal.tsx"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Keep the existing “won at least once per session” behavior using `useGameProgress` so that if the viewer has already won, the Game section reflects the won state and still lets them re-open rewards and replay.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/valentine/sections/GameSection.tsx",
+          "frontend/src/hooks/useGameProgress.ts",
+          "frontend/src/components/game/RewardsModal.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/valentine/sections/GameSection.tsx",
+          "frontend/src/components/game/RewardsModal.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "build-template/README.md",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/components/game/MatchPairsMiniGame.tsx",
+    "frontend/src/components/game/RewardsModal.tsx",
+    "frontend/src/components/game/WinPopups.tsx",
+    "frontend/src/components/valentine/sections/GameSection.tsx",
+    "frontend/src/index.css",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

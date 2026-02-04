@@ -1,0 +1,189 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 7,
+  "summary": "Valentine-themed full-stack Internet Computer app with Motoko backend (authorization + blob storage) and a React/Vite/Tailwind frontend featuring Internet Identity login, profile setup, owner content management (messages/photos), and a multi-section user experience (intro, photos, messages, game/rewards).",
+  "existing_features": [
+    {
+      "id": "IF-1",
+      "title": "Motoko backend canister with core app entrypoint",
+      "synonyms": [
+        "backend main canister"
+      ],
+      "description": "Backend canister wiring core modules and exposing APIs consumed by the frontend actor.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-2",
+      "title": "Authorization & access control module",
+      "synonyms": [
+        "authz",
+        "access control"
+      ],
+      "description": "Role/permission gating implemented via Motoko authorization mixins and access-control policies.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-3",
+      "title": "Blob storage canister module",
+      "synonyms": [
+        "image storage",
+        "file storage"
+      ],
+      "description": "Motoko blob storage providing upload/store/retrieve flows used by the frontend for pictures/assets.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-4",
+      "title": "Internet Identity authentication in frontend",
+      "synonyms": [
+        "II login",
+        "identity login"
+      ],
+      "description": "Frontend auth integration using Internet Identity, including actor creation and authz hooks.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-5",
+      "title": "Profile setup flow",
+      "synonyms": [
+        "user onboarding",
+        "profile modal"
+      ],
+      "description": "Profile setup modal shown after login to capture/setup user profile data needed for the app.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-6",
+      "title": "Owner editor panel for content management",
+      "synonyms": [
+        "admin panel",
+        "owner tools"
+      ],
+      "description": "Owner UI to manage app content including messages editor, pictures editor, and image upload dialog.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-7",
+      "title": "Valentine multi-section layout and navigation",
+      "synonyms": [
+        "ValentineLayout",
+        "SectionNav"
+      ],
+      "description": "Section-based UI with navigation across intro, photos, messages, and game sections.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-8",
+      "title": "Messages section (view + hooks)",
+      "synonyms": [
+        "love messages"
+      ],
+      "description": "Frontend messages section powered by messages hooks and owner-managed message content.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-9",
+      "title": "Photos section (gallery + hooks)",
+      "synonyms": [
+        "pictures"
+      ],
+      "description": "Frontend photos section powered by pictures hooks and blob storage integration with image validation.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-10",
+      "title": "Game progress and rewards modal",
+      "synonyms": [
+        "RewardsModal",
+        "game section"
+      ],
+      "description": "Game section with progress tracking hooks and rewards UI/modal.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-11",
+      "title": "React/Vite/Tailwind + shadcn-ui frontend scaffold",
+      "synonyms": [
+        "UI kit",
+        "component library"
+      ],
+      "description": "Frontend scaffold with Tailwind styling and shadcn-ui component set integrated into the project.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-color-sequence-love-memory-game-in-frontend-src-components-valentine-sections-gamesection-tsx-with-a-more-fun-more-interactive-mini-game-that-is-still-simple-to-play-in-browser-and-can-reliably-reach-a-clear-win-condition",
+      "title": "Replace the current color-sequence “Love Memory Game” in `frontend/src/components/valentine/sections/GameSection.tsx` with a more fun, more interactive mini-game that is still simple to play in-browser and can reliably reach a clear win condition.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-when-the-player-wins-the-new-mini-game-immediately-show-celebratory-pop-up-animations-featuring-the-existing-kiss-cupcake-and-bouquet-images-multiple-instances-can-appear-and-then-allow-the-player-to-view-the-rewards-screen",
+      "title": "When the player wins the new mini-game, immediately show celebratory pop-up animations featuring the existing kiss, cupcake, and bouquet images (multiple instances can appear), and then allow the player to view the rewards screen.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-keep-the-existing-won-at-least-once-per-session-behavior-using-usegameprogress-so-that-if-the-viewer-has-already-won-the-game-section-reflects-the-won-state-and-still-lets-them-re-open-rewards-and-replay",
+      "title": "Keep the existing “won at least once per session” behavior using `useGameProgress` so that if the viewer has already won, the Game section reflects the won state and still lets them re-open rewards and replay.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Revamp mini-game to be \"more fun\" and, on win, show celebratory pop-up animations for kiss, cupcake, and bouquet rewards.",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "architectural_notes": [
+    "Backend implemented in Motoko with separate authorization/access-control and blob-storage modules.",
+    "Frontend is a React + Vite + TypeScript app styled with Tailwind and shadcn-ui components.",
+    "Authentication uses Internet Identity; frontend creates authenticated actors and applies authz checks via hooks.",
+    "Image/file handling uses a blob-storage client plus frontend-side image validation and build-time resize/prune scripts.",
+    "Project includes a reusable build-template (Docker/deploy scripts, canister yamls, lint rules) for IC deployments."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "generatedImages": [
+    {
+      "filename": "frontend/public/assets/generated/bouquet.dim_512x512.png",
+      "description": "Generated 512x512 bouquet asset.",
+      "targetWidth": 512,
+      "targetHeight": 512
+    },
+    {
+      "filename": "frontend/public/assets/generated/cupcake.dim_512x512.png",
+      "description": "Generated 512x512 cupcake asset.",
+      "targetWidth": 512,
+      "targetHeight": 512
+    },
+    {
+      "filename": "frontend/public/assets/generated/kiss.dim_512x512.png",
+      "description": "Generated 512x512 kiss asset.",
+      "targetWidth": 512,
+      "targetHeight": 512
+    }
+  ],
+  "projectName": "Revamp mini-game and add win pop-up reward animations (kiss, cupcake, bouquet)",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
