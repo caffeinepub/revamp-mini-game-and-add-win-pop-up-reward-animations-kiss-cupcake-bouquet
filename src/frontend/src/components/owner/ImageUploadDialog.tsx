@@ -9,6 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { Upload } from 'lucide-react';
 import { ExternalBlob } from '@/backend';
 import { validateImage } from '@/utils/imageValidation';
+import { humanizeBackendError } from '@/utils/humanizeBackendError';
 import type { Picture } from '@/backend';
 
 interface ImageUploadDialogProps {
@@ -109,7 +110,8 @@ export default function ImageUploadDialog({ open, onClose, picture }: ImageUploa
 
       onClose();
     } catch (err: any) {
-      setError(err.message || 'Failed to save picture');
+      const humanizedError = humanizeBackendError(err);
+      setError(humanizedError);
     }
   };
 

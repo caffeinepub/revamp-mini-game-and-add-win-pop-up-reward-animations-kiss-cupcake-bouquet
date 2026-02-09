@@ -1,71 +1,72 @@
 {
   "kind": "build_request",
-  "title": "Revamp mini-game and add win pop-up reward animations (kiss, cupcake, bouquet)",
-  "priority": "normal",
+  "title": "Fix owner content management so pictures and messages can be added",
+  "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Replace the current color-sequence “Love Memory Game” in `frontend/src/components/valentine/sections/GameSection.tsx` with a more fun, more interactive mini-game that is still simple to play in-browser and can reliably reach a clear win condition.",
-      "target": "frontend",
+      "text": "Fix backend authorization/bootstrap so the intended owner account can successfully use admin-only endpoints to add/update/delete/reorder pictures and messages.",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-3"
+          "recent-messages-4"
         ],
         "quotes": [
-          "change the game to something more fun"
+          "not able to add pictures or messages"
         ]
       },
       "acceptanceCriteria": [
-        "The Game section no longer uses the current 4-color sequence-following mechanic.",
-        "The new game has a clearly explained objective and a deterministic win condition that the user can achieve during a normal play session.",
-        "The game supports a “Play Again” flow that fully resets the game state (not just the win flag)."
+        "When logged in as the intended owner, backend calls to addPicture, updatePicture, deletePicture, reorderPictures succeed without trapping with \"Unauthorized\".",
+        "When logged in as the intended owner, backend calls to addMessage, updateMessage, deleteMessage, reorderMessages succeed without trapping with \"Unauthorized\".",
+        "The solution includes a clear, deterministic way to establish/administer the admin role after deployment (e.g., initial admin assignment and/or a safe bootstrap flow) without requiring manual state editing."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "When the player wins the new mini-game, immediately show celebratory pop-up animations featuring the existing kiss, cupcake, and bouquet images (multiple instances can appear), and then allow the player to view the rewards screen.",
-      "target": "frontend",
+      "text": "Add explicit backend query endpoints for admins to fetch all pictures and all messages, and update the Owner Editor Panel data hooks to use these endpoints (instead of using unlocked-content queries intended for regular users).",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-3"
+          "recent-messages-4"
         ],
         "quotes": [
-          "and once u win make the kisses pop up and cupcake and bouquet"
+          "not able to add pictures or messages"
         ]
       },
       "acceptanceCriteria": [
-        "On win, animated pop-ups appear using: `/assets/generated/kiss.dim_512x512.png`, `/assets/generated/cupcake.dim_512x512.png`, `/assets/generated/bouquet.dim_512x512.png`.",
-        "The pop-up animation is visibly celebratory (e.g., floating/bursting/bouncing) and does not block the ability to proceed to the rewards UI.",
-        "The “Play Again” action stops/clears any ongoing pop-up animations and resets the UI to a clean starting state."
+        "Backend exposes admin-only queries that return the full list of pictures and the full list of messages (independent of unlock counts).",
+        "Owner editor screens (PicturesEditor and MessagesEditor) load existing items correctly for admins even when the admin has not unlocked any content.",
+        "Non-admin callers cannot access the new admin-only queries (backend traps or rejects as appropriate)."
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Keep the existing “won at least once per session” behavior using `useGameProgress` so that if the viewer has already won, the Game section reflects the won state and still lets them re-open rewards and replay.",
+      "text": "Improve frontend UX for the owner editing flow so that if a user is authenticated but not an admin, the UI clearly indicates they do not have access to manage content, and mutation failures surface actionable error messages.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-3"
+          "recent-messages-4"
         ],
         "quotes": [
-          "once u win"
+          "not able to add pictures or messages"
         ]
       },
       "acceptanceCriteria": [
-        "If `sessionStorage` indicates the viewer has won, the Game section shows the won UI state on load (no need to replay to see it).",
-        "The rewards screen remains accessible after a prior win (without replay) and the replay option still works."
+        "If a logged-in user is not an admin, the app shows an English user-facing message indicating that content management is owner-only (instead of silently hiding all editing capabilities with no explanation).",
+        "If add/update operations fail (e.g., due to authorization), the UI displays an English error message that helps the user understand what went wrong (not just a generic failure).",
+        "No changes are made to immutable paths listed in SYSTEM_CONTEXT (e.g., frontend/src/hooks/useActor.ts, useInternetIdentity.ts(x), and frontend/src/components/ui)."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files under `frontend/src/components/ui` (compose with existing shadcn components instead).",
-    "Do not edit immutable hook files listed in SYSTEM_CONTEXT (e.g., `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useActor.ts`).",
-    "Do not add new backend canisters or databases; keep the backend single-actor architecture unchanged."
+    "Backend must remain a single Motoko actor in backend/main.mo (no additional backend services).",
+    "Only create/update backend/migration.mo if a stable state schema change is required; otherwise keep migration as-is.",
+    "Do not modify files under frontend immutablePaths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui."
   ],
   "nonGoals": [
-    "Do not change the photos/messages owner editor features.",
-    "Do not change Internet Identity authentication behavior.",
-    "Do not introduce real-time multiplayer or WebSocket-based gameplay."
+    "Adding new mini-games or changing game win/unlock logic.",
+    "Changing the locked/unlocked viewing experience for non-admin users beyond necessary error messaging.",
+    "Adding third-party authentication providers (Internet Identity only)."
   ],
   "imageRequirements": {
     "required": [],

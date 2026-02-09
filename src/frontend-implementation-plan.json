@@ -1,82 +1,65 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Revamp Valentine mini-game with win pop-up reward animations",
+  "title": "Owner editor: use admin-only fetch + clearer non-admin UX and actionable errors",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Replace the current 4-color sequence memory mechanic with a more interactive in-browser mini-game that has a clear objective, deterministic win condition, and a full Play Again reset.",
-      "acceptanceCriteria": [
-        "The Game section no longer uses the current 4-color sequence-following mechanic.",
-        "The new game has a clearly explained objective and a deterministic win condition that the user can achieve during a normal play session.",
-        "The game supports a “Play Again” flow that fully resets the game state (not just the win flag)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/game/MatchPairsMiniGame.tsx",
-          "operation": "create",
-          "description": "Create a simple, deterministic 'match the pairs' mini-game component (card flip + match) with an explicit win condition (all pairs matched) and an imperative/prop-driven reset mechanism; compose with existing shadcn-ui components (do not edit `frontend/src/components/ui`). Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/valentine/sections/GameSection.tsx",
-          "operation": "modify",
-          "description": "Replace the existing color-sequence logic and UI with the new mini-game from `frontend/src/components/game/MatchPairsMiniGame.tsx`, including an on-screen objective/instructions and a Play Again flow that resets all in-game state (board, selections, matches, timers/attempts if used), not only the won flag. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
       "id": "REQ-2",
-      "summary": "On mini-game win, show celebratory animated pop-up bursts using the kiss, cupcake, and bouquet assets, without blocking progression to rewards; ensure Play Again clears animations.",
+      "summary": "Update owner editor data hooks to fetch full admin lists of pictures/messages (not unlocked-content queries).",
       "acceptanceCriteria": [
-        "On win, animated pop-ups appear using: `/assets/generated/kiss.dim_512x512.png`, `/assets/generated/cupcake.dim_512x512.png`, `/assets/generated/bouquet.dim_512x512.png`.",
-        "The pop-up animation is visibly celebratory (e.g., floating/bursting/bouncing) and does not block the ability to proceed to the rewards UI.",
-        "The “Play Again” action stops/clears any ongoing pop-up animations and resets the UI to a clean starting state."
+        "Owner editor screens (PicturesEditor and MessagesEditor) load existing items correctly for admins even when the admin has not unlocked any content."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/game/WinPopups.tsx",
-          "operation": "create",
-          "description": "Create a lightweight overlay component that spawns multiple animated, self-removing pop-ups using the static assets `frontend/public/assets/generated/kiss.dim_512x512.png`, `frontend/public/assets/generated/cupcake.dim_512x512.png`, and `frontend/public/assets/generated/bouquet.dim_512x512.png`; include an API to trigger bursts on win and to clear/stop animations on replay, and ensure the overlay does not block clicks for the rewards controls. Verify the component's usage instructions before implementing."
+          "path": "frontend/src/hooks/usePictures.ts",
+          "operation": "modify",
+          "description": "Switch admin editor fetching to use the backend capability that returns the full list (use getAllPictures instead of getUnlockedPictures) while keeping admin-gated query enablement. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/index.css",
+          "path": "frontend/src/hooks/useMessages.ts",
           "operation": "modify",
-          "description": "Add required CSS keyframes/utility classes to support celebratory pop-up motion (e.g., float up + drift + scale/rotate + fade) used by `frontend/src/components/game/WinPopups.tsx`, keeping changes within existing global styling entry points."
-        },
-        {
-          "path": "frontend/src/components/valentine/sections/GameSection.tsx",
-          "operation": "modify",
-          "description": "Wire win detection to immediately trigger `WinPopups` bursts on win, keep rewards access available while animations run, and ensure the Play Again action clears any scheduled/spawned pop-ups and returns the section to a clean starting state. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/game/RewardsModal.tsx",
-          "operation": "modify",
-          "description": "Confirm the rewards UI continues to reference and display the existing generated assets (`/assets/generated/bouquet.dim_512x512.png`, `/assets/generated/kiss.dim_512x512.png`, `/assets/generated/cupcake.dim_512x512.png`) and remains accessible immediately after win while pop-up animations are active; keep behavior consistent with non-blocking celebration."
+          "description": "Switch admin editor fetching to use the backend capability that returns the full list (use getAllMessages instead of getUnlockedMessages) while keeping admin-gated query enablement. Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
       "id": "REQ-3",
-      "summary": "Preserve the session-based 'won at least once' behavior via `useGameProgress`, showing the won state on load while still allowing rewards access and replay.",
+      "summary": "Make non-admin access explicit in the UI and surface actionable error messages for owner mutations.",
       "acceptanceCriteria": [
-        "If `sessionStorage` indicates the viewer has won, the Game section shows the won UI state on load (no need to replay to see it).",
-        "The rewards screen remains accessible after a prior win (without replay) and the replay option still works."
+        "If a logged-in user is not an admin, the app shows an English user-facing message indicating that content management is owner-only (instead of silently hiding all editing capabilities with no explanation).",
+        "If add/update operations fail (e.g., due to authorization), the UI displays an English error message that helps the user understand what went wrong (not just a generic failure).",
+        "No changes are made to immutable paths listed in SYSTEM_CONTEXT (e.g., frontend/src/hooks/useActor.ts, useInternetIdentity.ts(x), and frontend/src/components/ui)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/valentine/sections/GameSection.tsx",
+          "path": "frontend/src/components/owner/OwnerEditorPanel.tsx",
           "operation": "modify",
-          "description": "Maintain `useGameProgress` integration so that a prior session win forces the section into a won state on mount, keeps 'View Rewards' available without replay, and still allows replaying the mini-game without requiring clearing the session win flag."
+          "description": "Adjust the panel gating so that authenticated non-admin users see an explicit owner-only access message (e.g., an access-denied dialog/notice) instead of returning null. Keep admin users’ current management UI unchanged. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/hooks/useGameProgress.ts",
-          "operation": "modify",
-          "description": "Keep the existing sessionStorage-backed win tracking behavior stable for 'won at least once per session'; if needed for replay UX, extend the hook with an additional helper that supports resetting only the current run state without removing the stored 'won' marker (while preserving existing exports/semantics)."
+          "path": "frontend/src/components/owner/OwnerAccessDeniedDialog.tsx",
+          "operation": "create",
+          "description": "Add a small owner-access explanation UI (English) for authenticated non-admin users (e.g., dialog or inline notice) that clarifies content management is owner-only and suggests logging in as the owner account. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/components/game/RewardsModal.tsx",
+          "path": "frontend/src/utils/humanizeBackendError.ts",
+          "operation": "create",
+          "description": "Create a helper to convert common backend trap/errors (e.g., Unauthorized / role errors / actor not available) into actionable, user-friendly English messages suitable for toasts and inline form errors. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/usePictures.ts",
           "operation": "modify",
-          "description": "Ensure the modal remains openable from the 'already won' UI state and that its Play Again action routes back to the Game section replay flow without breaking the session-based won state."
+          "description": "Use the new error-humanizing helper in picture mutations (add/update/delete/reorder) so authorization failures and other common failures show actionable English messages in toasts. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useMessages.ts",
+          "operation": "modify",
+          "description": "Use the new error-humanizing helper in message mutations (add/update/delete/reorder) so authorization failures and other common failures show actionable English messages in toasts. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/owner/ImageUploadDialog.tsx",
+          "operation": "modify",
+          "description": "When add/update picture fails, display an actionable English error using the error-humanizing helper (instead of raw error.message) in the dialog’s inline error area. Verify the component's usage instructions before implementing."
         }
       ]
     }

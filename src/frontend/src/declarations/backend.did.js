@@ -27,7 +27,7 @@ export const UserRole = IDL.Variant({
 });
 export const MessageId = IDL.Text;
 export const PictureId = IDL.Text;
-export const UserProfile = IDL.Record({ 'name' : IDL.Text });
+export const TreatId = IDL.Text;
 export const Message = IDL.Record({
   'id' : MessageId,
   'content' : IDL.Text,
@@ -39,6 +39,18 @@ export const Picture = IDL.Record({
   'blob' : ExternalBlob,
   'description' : IDL.Text,
   'position' : IDL.Nat,
+});
+export const SweetTreat = IDL.Record({
+  'id' : TreatId,
+  'name' : IDL.Text,
+  'description' : IDL.Text,
+  'position' : IDL.Nat,
+});
+export const UserProfile = IDL.Record({ 'name' : IDL.Text });
+export const UnlockCount = IDL.Record({
+  'messages' : IDL.Nat,
+  'treats' : IDL.Nat,
+  'pictures' : IDL.Nat,
 });
 
 export const idlService = IDL.Service({
@@ -71,21 +83,33 @@ export const idlService = IDL.Service({
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
   'addMessage' : IDL.Func([IDL.Text, IDL.Nat], [], []),
   'addPicture' : IDL.Func([ExternalBlob, IDL.Text, IDL.Text], [], []),
+  'addSweetTreat' : IDL.Func([IDL.Text, IDL.Text, IDL.Nat], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'deleteMessage' : IDL.Func([MessageId], [], []),
   'deletePicture' : IDL.Func([PictureId], [], []),
+  'deleteSweetTreat' : IDL.Func([TreatId], [], []),
+  'getAllMessages' : IDL.Func([], [IDL.Vec(Message)], ['query']),
+  'getAllPictures' : IDL.Func([], [IDL.Vec(Picture)], ['query']),
+  'getAllTreats' : IDL.Func([], [IDL.Vec(SweetTreat)], ['query']),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
-  'getMessages' : IDL.Func([], [IDL.Vec(Message)], ['query']),
-  'getPictures' : IDL.Func([], [IDL.Vec(Picture)], ['query']),
+  'getUnlockedMessages' : IDL.Func([], [IDL.Vec(Message)], ['query']),
+  'getUnlockedPictures' : IDL.Func([], [IDL.Vec(Picture)], ['query']),
+  'getUnlockedTreats' : IDL.Func([], [IDL.Vec(SweetTreat)], ['query']),
   'getUserProfile' : IDL.Func(
       [IDL.Principal],
       [IDL.Opt(UserProfile)],
       ['query'],
     ),
+  'incrementUnlocks' : IDL.Func(
+      [IDL.Bool, IDL.Bool, IDL.Bool],
+      [UnlockCount],
+      [],
+    ),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'reorderMessages' : IDL.Func([IDL.Vec(MessageId)], [], []),
   'reorderPictures' : IDL.Func([IDL.Vec(PictureId)], [], []),
+  'reorderSweetTreats' : IDL.Func([IDL.Vec(TreatId)], [], []),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'updateMessage' : IDL.Func([MessageId, IDL.Text, IDL.Nat], [], []),
   'updatePicture' : IDL.Func(
@@ -93,6 +117,7 @@ export const idlService = IDL.Service({
       [],
       [],
     ),
+  'updateSweetTreat' : IDL.Func([TreatId, IDL.Text, IDL.Text, IDL.Nat], [], []),
 });
 
 export const idlInitArgs = [];
@@ -117,7 +142,7 @@ export const idlFactory = ({ IDL }) => {
   });
   const MessageId = IDL.Text;
   const PictureId = IDL.Text;
-  const UserProfile = IDL.Record({ 'name' : IDL.Text });
+  const TreatId = IDL.Text;
   const Message = IDL.Record({
     'id' : MessageId,
     'content' : IDL.Text,
@@ -129,6 +154,18 @@ export const idlFactory = ({ IDL }) => {
     'blob' : ExternalBlob,
     'description' : IDL.Text,
     'position' : IDL.Nat,
+  });
+  const SweetTreat = IDL.Record({
+    'id' : TreatId,
+    'name' : IDL.Text,
+    'description' : IDL.Text,
+    'position' : IDL.Nat,
+  });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text });
+  const UnlockCount = IDL.Record({
+    'messages' : IDL.Nat,
+    'treats' : IDL.Nat,
+    'pictures' : IDL.Nat,
   });
   
   return IDL.Service({
@@ -161,25 +198,42 @@ export const idlFactory = ({ IDL }) => {
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
     'addMessage' : IDL.Func([IDL.Text, IDL.Nat], [], []),
     'addPicture' : IDL.Func([ExternalBlob, IDL.Text, IDL.Text], [], []),
+    'addSweetTreat' : IDL.Func([IDL.Text, IDL.Text, IDL.Nat], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
     'deleteMessage' : IDL.Func([MessageId], [], []),
     'deletePicture' : IDL.Func([PictureId], [], []),
+    'deleteSweetTreat' : IDL.Func([TreatId], [], []),
+    'getAllMessages' : IDL.Func([], [IDL.Vec(Message)], ['query']),
+    'getAllPictures' : IDL.Func([], [IDL.Vec(Picture)], ['query']),
+    'getAllTreats' : IDL.Func([], [IDL.Vec(SweetTreat)], ['query']),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
-    'getMessages' : IDL.Func([], [IDL.Vec(Message)], ['query']),
-    'getPictures' : IDL.Func([], [IDL.Vec(Picture)], ['query']),
+    'getUnlockedMessages' : IDL.Func([], [IDL.Vec(Message)], ['query']),
+    'getUnlockedPictures' : IDL.Func([], [IDL.Vec(Picture)], ['query']),
+    'getUnlockedTreats' : IDL.Func([], [IDL.Vec(SweetTreat)], ['query']),
     'getUserProfile' : IDL.Func(
         [IDL.Principal],
         [IDL.Opt(UserProfile)],
         ['query'],
       ),
+    'incrementUnlocks' : IDL.Func(
+        [IDL.Bool, IDL.Bool, IDL.Bool],
+        [UnlockCount],
+        [],
+      ),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'reorderMessages' : IDL.Func([IDL.Vec(MessageId)], [], []),
     'reorderPictures' : IDL.Func([IDL.Vec(PictureId)], [], []),
+    'reorderSweetTreats' : IDL.Func([IDL.Vec(TreatId)], [], []),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'updateMessage' : IDL.Func([MessageId, IDL.Text, IDL.Nat], [], []),
     'updatePicture' : IDL.Func(
         [PictureId, ExternalBlob, IDL.Text, IDL.Text],
+        [],
+        [],
+      ),
+    'updateSweetTreat' : IDL.Func(
+        [TreatId, IDL.Text, IDL.Text, IDL.Nat],
         [],
         [],
       ),

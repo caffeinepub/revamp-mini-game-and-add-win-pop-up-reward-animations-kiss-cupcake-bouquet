@@ -1,4 +1,4 @@
-import { Heart, Image, MessageCircle, Gamepad2 } from 'lucide-react';
+import { Heart, Image, MessageCircle, Gamepad2, Cake } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface SectionNavProps {
@@ -17,7 +17,8 @@ export default function SectionNav({ activeSection }: SectionNavProps) {
     { id: 'intro', label: 'Home', icon: Heart },
     { id: 'photos', label: 'Photos', icon: Image },
     { id: 'messages', label: 'Messages', icon: MessageCircle },
-    { id: 'game', label: 'Game', icon: Gamepad2 },
+    { id: 'treats', label: 'Treats', icon: Cake },
+    { id: 'game', label: 'Games', icon: Gamepad2 },
   ];
 
   return (

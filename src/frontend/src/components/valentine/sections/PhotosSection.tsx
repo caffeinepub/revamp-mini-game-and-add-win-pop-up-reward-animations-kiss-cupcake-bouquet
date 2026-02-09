@@ -1,15 +1,29 @@
+import { useGetUnlockedPictures } from '@/hooks/useUnlockedContent';
 import { useGetPictures } from '@/hooks/usePictures';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Image as ImageIcon, Heart } from 'lucide-react';
+import { Image as ImageIcon, Heart, Lock } from 'lucide-react';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useInternetIdentity } from '@/hooks/useInternetIdentity';
+import { useIsCallerAdmin } from '@/hooks/useAuthz';
 
 export default function PhotosSection() {
-  const { data: pictures = [], isLoading } = useGetPictures();
-  const [selectedPicture, setSelectedPicture] = useState<typeof pictures[0] | null>(null);
+  const { identity } = useInternetIdentity();
+  const { data: isAdmin } = useIsCallerAdmin();
+  const { data: unlockedPictures = [], isLoading: unlockedLoading } = useGetUnlockedPictures();
+  const { data: adminPictures = [], isLoading: adminLoading } = useGetPictures();
+  const [selectedPicture, setSelectedPicture] = useState<typeof unlockedPictures[0] | null>(null);
+
+  const isAuthenticated = !!identity;
+  
+  // Admin sees all pictures, regular users see unlocked pictures, guests see nothing
+  const isLoading = isAdmin ? adminLoading : unlockedLoading;
+  const pictures = isAdmin ? adminPictures : unlockedPictures;
 
   const sortedPictures = [...pictures].sort((a, b) => Number(a.position) - Number(b.position));
+  const totalSlots = 5;
+  const lockedCount = Math.max(0, totalSlots - sortedPictures.length);
 
   return (
     <section id="photos" className="min-h-screen py-20 px-4">
@@ -19,7 +33,7 @@ export default function PhotosSection() {
             Our Beautiful Moments
           </h2>
           <p className="text-lg text-muted-foreground">
-            Every picture tells our story
+            {isAuthenticated && !isAdmin ? 'Win games to unlock more photos' : 'Every picture tells our story'}
           </p>
         </div>
 
@@ -40,7 +54,7 @@ export default function PhotosSection() {
             <ImageIcon className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">No Photos Yet</h3>
             <p className="text-muted-foreground">
-              Photos will appear here once they're added
+              {isAdmin ? 'Add photos using the settings panel' : 'Photos will appear here once unlocked'}
             </p>
           </Card>
         ) : (
@@ -65,6 +79,25 @@ export default function PhotosSection() {
                 <CardContent className="p-4">
                   <h3 className="font-semibold text-lg mb-1 line-clamp-1">{picture.title}</h3>
                   <p className="text-sm text-muted-foreground line-clamp-2">{picture.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+
+            {isAuthenticated && !isAdmin && Array.from({ length: lockedCount }).map((_, index) => (
+              <Card
+                key={`locked-${index}`}
+                className="overflow-hidden opacity-60"
+              >
+                <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
+                  <div className="text-center space-y-2">
+                    <Lock className="w-12 h-12 mx-auto text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground font-medium">Locked</p>
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <p className="text-sm text-muted-foreground text-center">
+                    Win a game to unlock
+                  </p>
                 </CardContent>
               </Card>
             ))}

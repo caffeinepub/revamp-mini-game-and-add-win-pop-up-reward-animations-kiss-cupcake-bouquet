@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Heart, Sparkles, Gift, Cake } from 'lucide-react';
 
@@ -21,14 +21,13 @@ export default function MatchPairsMiniGame({ onWin, resetTrigger = 0 }: MatchPai
   const [flippedIndices, setFlippedIndices] = useState<number[]>([]);
   const [isChecking, setIsChecking] = useState(false);
   const [moves, setMoves] = useState(0);
+  const winCalledRef = useRef(false);
 
-  // Initialize or reset the game
   useEffect(() => {
     initializeGame();
   }, [resetTrigger]);
 
   const initializeGame = () => {
-    // Create pairs of cards
     const cardPairs: CardType[] = [];
     ICONS.forEach((icon, idx) => {
       cardPairs.push(
@@ -37,12 +36,12 @@ export default function MatchPairsMiniGame({ onWin, resetTrigger = 0 }: MatchPai
       );
     });
 
-    // Shuffle cards
     const shuffled = cardPairs.sort(() => Math.random() - 0.5);
     setCards(shuffled);
     setFlippedIndices([]);
     setIsChecking(false);
     setMoves(0);
+    winCalledRef.current = false;
   };
 
   const handleCardClick = (index: number) => {
@@ -71,7 +70,6 @@ export default function MatchPairsMiniGame({ onWin, resetTrigger = 0 }: MatchPai
       const secondCard = newCards[secondIndex];
 
       if (firstCard.icon === secondCard.icon) {
-        // Match found!
         setTimeout(() => {
           const matchedCards = [...newCards];
           matchedCards[firstIndex].isMatched = true;
@@ -80,13 +78,12 @@ export default function MatchPairsMiniGame({ onWin, resetTrigger = 0 }: MatchPai
           setFlippedIndices([]);
           setIsChecking(false);
 
-          // Check if all cards are matched
-          if (matchedCards.every(card => card.isMatched)) {
+          if (matchedCards.every(card => card.isMatched) && !winCalledRef.current) {
+            winCalledRef.current = true;
             setTimeout(() => onWin(), 300);
           }
         }, 600);
       } else {
-        // No match - flip back
         setTimeout(() => {
           const resetCards = [...newCards];
           resetCards[firstIndex].isFlipped = false;

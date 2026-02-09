@@ -25,6 +25,18 @@ export interface Picture {
   'position' : bigint,
 }
 export type PictureId = string;
+export interface SweetTreat {
+  'id' : TreatId,
+  'name' : string,
+  'description' : string,
+  'position' : bigint,
+}
+export type TreatId = string;
+export interface UnlockCount {
+  'messages' : bigint,
+  'treats' : bigint,
+  'pictures' : bigint,
+}
 export interface UserProfile { 'name' : string }
 export type UserRole = { 'admin' : null } |
   { 'user' : null } |
@@ -59,21 +71,33 @@ export interface _SERVICE {
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'addMessage' : ActorMethod<[string, bigint], undefined>,
   'addPicture' : ActorMethod<[ExternalBlob, string, string], undefined>,
+  'addSweetTreat' : ActorMethod<[string, string, bigint], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'deleteMessage' : ActorMethod<[MessageId], undefined>,
   'deletePicture' : ActorMethod<[PictureId], undefined>,
+  'deleteSweetTreat' : ActorMethod<[TreatId], undefined>,
+  'getAllMessages' : ActorMethod<[], Array<Message>>,
+  'getAllPictures' : ActorMethod<[], Array<Picture>>,
+  'getAllTreats' : ActorMethod<[], Array<SweetTreat>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
-  'getMessages' : ActorMethod<[], Array<Message>>,
-  'getPictures' : ActorMethod<[], Array<Picture>>,
+  'getUnlockedMessages' : ActorMethod<[], Array<Message>>,
+  'getUnlockedPictures' : ActorMethod<[], Array<Picture>>,
+  'getUnlockedTreats' : ActorMethod<[], Array<SweetTreat>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'incrementUnlocks' : ActorMethod<[boolean, boolean, boolean], UnlockCount>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'reorderMessages' : ActorMethod<[Array<MessageId>], undefined>,
   'reorderPictures' : ActorMethod<[Array<PictureId>], undefined>,
+  'reorderSweetTreats' : ActorMethod<[Array<TreatId>], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'updateMessage' : ActorMethod<[MessageId, string, bigint], undefined>,
   'updatePicture' : ActorMethod<
     [PictureId, ExternalBlob, string, string],
+    undefined
+  >,
+  'updateSweetTreat' : ActorMethod<
+    [TreatId, string, string, bigint],
     undefined
   >,
 }

@@ -1,12 +1,26 @@
+import { useGetUnlockedMessages } from '@/hooks/useUnlockedContent';
 import { useGetMessages } from '@/hooks/useMessages';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MessageCircle, Heart } from 'lucide-react';
+import { MessageCircle, Heart, Lock } from 'lucide-react';
+import { useInternetIdentity } from '@/hooks/useInternetIdentity';
+import { useIsCallerAdmin } from '@/hooks/useAuthz';
 
 export default function MessagesSection() {
-  const { data: messages = [], isLoading } = useGetMessages();
+  const { identity } = useInternetIdentity();
+  const { data: isAdmin } = useIsCallerAdmin();
+  const { data: unlockedMessages = [], isLoading: unlockedLoading } = useGetUnlockedMessages();
+  const { data: adminMessages = [], isLoading: adminLoading } = useGetMessages();
+
+  const isAuthenticated = !!identity;
+  
+  // Admin sees all messages, regular users see unlocked messages, guests see nothing
+  const isLoading = isAdmin ? adminLoading : unlockedLoading;
+  const messages = isAdmin ? adminMessages : unlockedMessages;
 
   const sortedMessages = [...messages].sort((a, b) => Number(a.position) - Number(b.position));
+  const totalSlots = 5;
+  const lockedCount = Math.max(0, totalSlots - sortedMessages.length);
 
   return (
     <section id="messages" className="min-h-screen py-20 px-4">
@@ -16,7 +30,7 @@ export default function MessagesSection() {
             Messages From My Heart
           </h2>
           <p className="text-lg text-muted-foreground">
-            Words I want you to always remember
+            {isAuthenticated && !isAdmin ? 'Win games to unlock more messages' : 'Words I want you to always remember'}
           </p>
         </div>
 
@@ -35,7 +49,7 @@ export default function MessagesSection() {
             <MessageCircle className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">No Messages Yet</h3>
             <p className="text-muted-foreground">
-              Messages will appear here once they're added
+              {isAdmin ? 'Add messages using the settings panel' : 'Messages will appear here once unlocked'}
             </p>
           </Card>
         ) : (
@@ -58,6 +72,20 @@ export default function MessagesSection() {
                         {message.content}
                       </p>
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+
+            {isAuthenticated && !isAdmin && Array.from({ length: lockedCount }).map((_, index) => (
+              <Card
+                key={`locked-${index}`}
+                className="opacity-60"
+              >
+                <CardContent className="p-8 relative">
+                  <div className="flex items-center justify-center gap-4 text-muted-foreground">
+                    <Lock className="w-8 h-8" />
+                    <p className="text-lg">Win a game to unlock this message</p>
                   </div>
                 </CardContent>
               </Card>

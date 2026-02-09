@@ -2,29 +2,54 @@ import { useState, useEffect } from 'react';
 
 const GAME_PROGRESS_KEY = 'valentine_game_progress';
 
+type GameId = 'match-pairs' | 'heart-click' | 'love-word' | 'cupid-aim' | 'sweet-sort';
+
+interface GameProgress {
+  completedGames: GameId[];
+}
+
 export function useGameProgress() {
-  const [hasWon, setHasWon] = useState(false);
+  const [progress, setProgress] = useState<GameProgress>({ completedGames: [] });
 
   useEffect(() => {
     const stored = sessionStorage.getItem(GAME_PROGRESS_KEY);
-    if (stored === 'won') {
-      setHasWon(true);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setProgress(parsed);
+      } catch (e) {
+        console.error('Failed to parse game progress:', e);
+      }
     }
   }, []);
 
-  const markAsWon = () => {
-    sessionStorage.setItem(GAME_PROGRESS_KEY, 'won');
-    setHasWon(true);
+  const markGameComplete = (gameId: GameId) => {
+    setProgress((prev) => {
+      if (prev.completedGames.includes(gameId)) {
+        return prev;
+      }
+      const newProgress = {
+        completedGames: [...prev.completedGames, gameId],
+      };
+      sessionStorage.setItem(GAME_PROGRESS_KEY, JSON.stringify(newProgress));
+      return newProgress;
+    });
   };
 
-  const resetGame = () => {
+  const isGameComplete = (gameId: GameId) => {
+    return progress.completedGames.includes(gameId);
+  };
+
+  const resetProgress = () => {
     sessionStorage.removeItem(GAME_PROGRESS_KEY);
-    setHasWon(false);
+    setProgress({ completedGames: [] });
   };
 
   return {
-    hasWon,
-    markAsWon,
-    resetGame,
+    completedGames: progress.completedGames,
+    totalCompleted: progress.completedGames.length,
+    markGameComplete,
+    isGameComplete,
+    resetProgress,
   };
 }

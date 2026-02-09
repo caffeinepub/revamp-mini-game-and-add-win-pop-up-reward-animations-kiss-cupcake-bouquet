@@ -1,18 +1,22 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
+import { useIsCallerAdmin } from './useAuthz';
 import type { Message, MessageId } from '../backend';
 import { toast } from 'sonner';
+import { humanizeBackendError } from '@/utils/humanizeBackendError';
 
 export function useGetMessages() {
   const { actor, isFetching } = useActor();
+  const { data: isAdmin } = useIsCallerAdmin();
 
   return useQuery<Message[]>({
     queryKey: ['messages'],
     queryFn: async () => {
       if (!actor) return [];
-      return actor.getMessages();
+      // For admin users, use getAllMessages to fetch the full list
+      return actor.getAllMessages();
     },
-    enabled: !!actor && !isFetching,
+    enabled: !!actor && !isFetching && !!isAdmin,
   });
 }
 
@@ -27,10 +31,12 @@ export function useAddMessage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['messages'] });
+      queryClient.invalidateQueries({ queryKey: ['unlockedMessages'] });
       toast.success('Message added successfully');
     },
     onError: (error: Error) => {
-      toast.error(`Failed to add message: ${error.message}`);
+      const message = humanizeBackendError(error);
+      toast.error(message);
     },
   });
 }
@@ -46,10 +52,12 @@ export function useUpdateMessage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['messages'] });
+      queryClient.invalidateQueries({ queryKey: ['unlockedMessages'] });
       toast.success('Message updated successfully');
     },
     onError: (error: Error) => {
-      toast.error(`Failed to update message: ${error.message}`);
+      const message = humanizeBackendError(error);
+      toast.error(message);
     },
   });
 }
@@ -65,10 +73,12 @@ export function useDeleteMessage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['messages'] });
+      queryClient.invalidateQueries({ queryKey: ['unlockedMessages'] });
       toast.success('Message deleted successfully');
     },
     onError: (error: Error) => {
-      toast.error(`Failed to delete message: ${error.message}`);
+      const message = humanizeBackendError(error);
+      toast.error(message);
     },
   });
 }
@@ -84,10 +94,12 @@ export function useReorderMessages() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['messages'] });
+      queryClient.invalidateQueries({ queryKey: ['unlockedMessages'] });
       toast.success('Messages reordered successfully');
     },
     onError: (error: Error) => {
-      toast.error(`Failed to reorder messages: ${error.message}`);
+      const message = humanizeBackendError(error);
+      toast.error(message);
     },
   });
 }

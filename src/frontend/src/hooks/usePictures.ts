@@ -1,19 +1,23 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
+import { useIsCallerAdmin } from './useAuthz';
 import type { Picture, PictureId } from '../backend';
 import { ExternalBlob } from '../backend';
 import { toast } from 'sonner';
+import { humanizeBackendError } from '@/utils/humanizeBackendError';
 
 export function useGetPictures() {
   const { actor, isFetching } = useActor();
+  const { data: isAdmin } = useIsCallerAdmin();
 
   return useQuery<Picture[]>({
     queryKey: ['pictures'],
     queryFn: async () => {
       if (!actor) return [];
-      return actor.getPictures();
+      // For admin users, use getAllPictures to fetch the full list
+      return actor.getAllPictures();
     },
-    enabled: !!actor && !isFetching,
+    enabled: !!actor && !isFetching && !!isAdmin,
   });
 }
 
@@ -28,10 +32,12 @@ export function useAddPicture() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pictures'] });
+      queryClient.invalidateQueries({ queryKey: ['unlockedPictures'] });
       toast.success('Picture added successfully');
     },
     onError: (error: Error) => {
-      toast.error(`Failed to add picture: ${error.message}`);
+      const message = humanizeBackendError(error);
+      toast.error(message);
     },
   });
 }
@@ -47,10 +53,12 @@ export function useUpdatePicture() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pictures'] });
+      queryClient.invalidateQueries({ queryKey: ['unlockedPictures'] });
       toast.success('Picture updated successfully');
     },
     onError: (error: Error) => {
-      toast.error(`Failed to update picture: ${error.message}`);
+      const message = humanizeBackendError(error);
+      toast.error(message);
     },
   });
 }
@@ -66,10 +74,12 @@ export function useDeletePicture() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pictures'] });
+      queryClient.invalidateQueries({ queryKey: ['unlockedPictures'] });
       toast.success('Picture deleted successfully');
     },
     onError: (error: Error) => {
-      toast.error(`Failed to delete picture: ${error.message}`);
+      const message = humanizeBackendError(error);
+      toast.error(message);
     },
   });
 }
@@ -85,10 +95,12 @@ export function useReorderPictures() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pictures'] });
+      queryClient.invalidateQueries({ queryKey: ['unlockedPictures'] });
       toast.success('Pictures reordered successfully');
     },
     onError: (error: Error) => {
-      toast.error(`Failed to reorder pictures: ${error.message}`);
+      const message = humanizeBackendError(error);
+      toast.error(message);
     },
   });
 }

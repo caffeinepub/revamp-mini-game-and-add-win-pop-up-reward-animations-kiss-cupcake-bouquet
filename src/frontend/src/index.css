@@ -3,115 +3,85 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-        --radius: 1rem;
-        /* Romantic Valentine's palette - warm pinks, reds, and cream */
-        --background: 0.98 0.015 15;
-        --foreground: 0.25 0.05 15;
-        --card: 1 0.01 15;
-        --card-foreground: 0.25 0.05 15;
-        --popover: 1 0.01 15;
-        --popover-foreground: 0.25 0.05 15;
-        --primary: 0.55 0.22 15;
-        --primary-foreground: 0.98 0.01 15;
-        --secondary: 0.92 0.04 15;
-        --secondary-foreground: 0.35 0.05 15;
-        --muted: 0.95 0.02 15;
-        --muted-foreground: 0.50 0.03 15;
-        --accent: 0.75 0.18 355;
-        --accent-foreground: 0.98 0.01 15;
-        --destructive: 0.55 0.24 25;
-        --destructive-foreground: 0.98 0.01 15;
-        --border: 0.90 0.03 15;
-        --input: 0.90 0.03 15;
-        --ring: 0.55 0.22 15;
-        --chart-1: 0.65 0.20 355;
-        --chart-2: 0.70 0.15 15;
-        --chart-3: 0.60 0.18 340;
-        --chart-4: 0.75 0.12 30;
-        --chart-5: 0.68 0.16 350;
-    }
+  :root {
+    --background: oklch(98% 0.01 320);
+    --foreground: oklch(20% 0.02 320);
+    --card: oklch(100% 0 0);
+    --card-foreground: oklch(20% 0.02 320);
+    --popover: oklch(100% 0 0);
+    --popover-foreground: oklch(20% 0.02 320);
+    --primary: oklch(58% 0.22 10);
+    --primary-foreground: oklch(100% 0 0);
+    --secondary: oklch(95% 0.02 320);
+    --secondary-foreground: oklch(20% 0.02 320);
+    --muted: oklch(95% 0.01 320);
+    --muted-foreground: oklch(50% 0.01 320);
+    --accent: oklch(75% 0.18 350);
+    --accent-foreground: oklch(20% 0.02 320);
+    --destructive: oklch(55% 0.22 25);
+    --destructive-foreground: oklch(100% 0 0);
+    --border: oklch(90% 0.01 320);
+    --input: oklch(90% 0.01 320);
+    --ring: oklch(58% 0.22 10);
+    --radius: 0.5rem;
+  }
 
-    .dark {
-        --background: 0.15 0.04 15;
-        --foreground: 0.95 0.02 15;
-        --card: 0.20 0.05 15;
-        --card-foreground: 0.95 0.02 15;
-        --popover: 0.18 0.05 15;
-        --popover-foreground: 0.95 0.02 15;
-        --primary: 0.65 0.20 355;
-        --primary-foreground: 0.15 0.04 15;
-        --secondary: 0.25 0.05 15;
-        --secondary-foreground: 0.95 0.02 15;
-        --muted: 0.25 0.05 15;
-        --muted-foreground: 0.65 0.03 15;
-        --accent: 0.55 0.18 340;
-        --accent-foreground: 0.95 0.02 15;
-        --destructive: 0.60 0.22 25;
-        --destructive-foreground: 0.95 0.02 15;
-        --border: 0.30 0.05 15;
-        --input: 0.30 0.05 15;
-        --ring: 0.65 0.20 355;
-        --chart-1: 0.65 0.20 355;
-        --chart-2: 0.70 0.15 15;
-        --chart-3: 0.60 0.18 340;
-        --chart-4: 0.75 0.12 30;
-        --chart-5: 0.68 0.16 350;
-    }
+  .dark {
+    --background: oklch(15% 0.02 320);
+    --foreground: oklch(95% 0.01 320);
+    --card: oklch(18% 0.02 320);
+    --card-foreground: oklch(95% 0.01 320);
+    --popover: oklch(18% 0.02 320);
+    --popover-foreground: oklch(95% 0.01 320);
+    --primary: oklch(65% 0.22 10);
+    --primary-foreground: oklch(15% 0.02 320);
+    --secondary: oklch(25% 0.02 320);
+    --secondary-foreground: oklch(95% 0.01 320);
+    --muted: oklch(25% 0.02 320);
+    --muted-foreground: oklch(65% 0.01 320);
+    --accent: oklch(70% 0.18 350);
+    --accent-foreground: oklch(15% 0.02 320);
+    --destructive: oklch(60% 0.22 25);
+    --destructive-foreground: oklch(95% 0.01 320);
+    --border: oklch(30% 0.02 320);
+    --input: oklch(30% 0.02 320);
+    --ring: oklch(65% 0.22 10);
+  }
+}
 
-    * {
-        @apply border-border;
-    }
-    
-    body {
-        @apply bg-background text-foreground;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-        font-family: 'Georgia', 'Times New Roman', serif;
-        font-weight: 600;
-    }
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
 }
 
 @layer utilities {
-    .valentine-gradient {
-        background: linear-gradient(135deg, oklch(0.95 0.04 15) 0%, oklch(0.92 0.06 355) 100%);
-    }
-
-    .valentine-gradient-dark {
-        background: linear-gradient(135deg, oklch(0.20 0.05 15) 0%, oklch(0.25 0.06 340) 100%);
-    }
-
-    .heart-shadow {
-        box-shadow: 0 4px 20px oklch(0.55 0.22 15 / 0.15);
-    }
-
-    .smooth-scroll {
-        scroll-behavior: smooth;
-    }
+  .heart-shadow {
+    box-shadow: 0 4px 20px rgba(255, 105, 135, 0.15);
+  }
 }
 
-/* Win popup animations */
-@keyframes win-popup {
-    0% {
-        transform: translate(-50%, -50%) scale(0) rotate(0deg);
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    50% {
-        transform: translate(-50%, -150%) scale(1.2) rotate(180deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(-50%, -250%) scale(0.8) rotate(360deg);
-        opacity: 0;
-    }
+@keyframes float-up {
+  0% {
+    transform: translateY(0) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) scale(1.5);
+    opacity: 0;
+  }
 }
 
 .win-popup {
-    animation: win-popup 3s ease-out forwards;
-    transform-origin: center;
+  animation: float-up 3s ease-out forwards;
 }

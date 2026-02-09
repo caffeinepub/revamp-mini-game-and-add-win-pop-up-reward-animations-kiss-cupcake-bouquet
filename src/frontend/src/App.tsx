@@ -5,6 +5,7 @@ import ValentineLayout from './components/valentine/ValentineLayout';
 import IntroSection from './components/valentine/sections/IntroSection';
 import PhotosSection from './components/valentine/sections/PhotosSection';
 import MessagesSection from './components/valentine/sections/MessagesSection';
+import TreatsSection from './components/valentine/sections/TreatsSection';
 import GameSection from './components/valentine/sections/GameSection';
 import LoginButton from './components/auth/LoginButton';
 import ProfileSetupModal from './components/auth/ProfileSetupModal';
@@ -22,7 +23,7 @@ export default function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['intro', 'photos', 'messages', 'game'];
+      const sections = ['intro', 'photos', 'messages', 'treats', 'game'];
       const scrollPosition = window.scrollY + 100;
 
       for (const sectionId of sections) {
@@ -51,6 +52,7 @@ export default function App() {
         <IntroSection />
         <PhotosSection />
         <MessagesSection />
+        <TreatsSection />
         <GameSection />
 
         {isAuthenticated && <OwnerEditorPanel />}
