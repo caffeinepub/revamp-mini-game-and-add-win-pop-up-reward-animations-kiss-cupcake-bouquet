@@ -9,6 +9,7 @@ import LoveWordMiniGame from '@/components/game/LoveWordMiniGame';
 import CupidAimMiniGame from '@/components/game/CupidAimMiniGame';
 import SweetSortMiniGame from '@/components/game/SweetSortMiniGame';
 import WinPopups from '@/components/game/WinPopups';
+import WinLoveMessagePopup from '@/components/game/WinLoveMessagePopup';
 import { useGameProgress } from '@/hooks/useGameProgress';
 import { useIncrementUnlocks } from '@/hooks/useUnlocks';
 import { useGetUnlockedPictures, useGetUnlockedMessages, useGetUnlockedTreats } from '@/hooks/useUnlockedContent';
@@ -40,6 +41,8 @@ export default function GameSection() {
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'won'>('idle');
   const [showRewards, setShowRewards] = useState(false);
   const [showPopups, setShowPopups] = useState(false);
+  const [showLoveMessage, setShowLoveMessage] = useState(false);
+  const [loveMessageKey, setLoveMessageKey] = useState(0);
   const [resetTrigger, setResetTrigger] = useState(0);
   const [unlockedReward, setUnlockedReward] = useState<{ message: string; photo: string; treat: string } | null>(null);
   const winHandledRef = useRef(false);
@@ -62,6 +65,7 @@ export default function GameSection() {
     setSelectedGame(gameId);
     setGameState('playing');
     setShowPopups(false);
+    setShowLoveMessage(false);
     setResetTrigger(prev => prev + 1);
     winHandledRef.current = false;
   };
@@ -71,6 +75,11 @@ export default function GameSection() {
     winHandledRef.current = true;
 
     const alreadyCompleted = isGameComplete(selectedGame);
+    
+    // Show love message popup for every win
+    setLoveMessageKey(prev => prev + 1);
+    setShowLoveMessage(true);
+    
     if (alreadyCompleted) {
       setGameState('won');
       setShowPopups(true);
@@ -111,6 +120,7 @@ export default function GameSection() {
     setGameState('idle');
     setShowRewards(false);
     setShowPopups(false);
+    setShowLoveMessage(false);
     winHandledRef.current = false;
   };
 
@@ -118,6 +128,7 @@ export default function GameSection() {
     setGameState('idle');
     setShowRewards(false);
     setShowPopups(false);
+    setShowLoveMessage(false);
     winHandledRef.current = false;
   };
 
@@ -246,6 +257,12 @@ export default function GameSection() {
       </div>
 
       <WinPopups isActive={showPopups} />
+      
+      <WinLoveMessagePopup 
+        key={loveMessageKey}
+        isVisible={showLoveMessage} 
+        onDismiss={() => setShowLoveMessage(false)} 
+      />
 
       <RewardsModal
         open={showRewards}

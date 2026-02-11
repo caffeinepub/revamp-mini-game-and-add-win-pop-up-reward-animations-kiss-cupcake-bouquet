@@ -1,65 +1,48 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Owner editor: use admin-only fetch + clearer non-admin UX and actionable errors",
+  "title": "Win love-message popup overlay for mini-game victories",
   "requirements": [
     {
-      "id": "REQ-2",
-      "summary": "Update owner editor data hooks to fetch full admin lists of pictures/messages (not unlocked-content queries).",
+      "id": "REQ-1",
+      "summary": "Show a short sweet love-message overlay popup on every mini-game win, auto-dismissing without blocking the existing win celebration and Rewards modal flow.",
       "acceptanceCriteria": [
-        "Owner editor screens (PicturesEditor and MessagesEditor) load existing items correctly for admins even when the admin has not unlocked any content."
+        "Winning any of the 5 mini-games triggers a visible overlay popup containing a sweet love message, in addition to the existing win UI/WinPopups behavior.",
+        "The love-message popup appears on both first-time wins and already-completed wins.",
+        "The love-message popup auto-dismisses after a short duration and does not block the existing flow to show the Rewards modal.",
+        "The popup is visually readable on top of the game UI (appropriate contrast, spacing, and responsive sizing)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/usePictures.ts",
+          "path": "frontend/src/components/valentine/sections/GameSection.tsx",
           "operation": "modify",
-          "description": "Switch admin editor fetching to use the backend capability that returns the full list (use getAllPictures instead of getUnlockedPictures) while keeping admin-gated query enablement. Verify the component's usage instructions before implementing."
+          "description": "Trigger the new WinLoveMessagePopup whenever handleWin runs (for both first-time wins and repeat wins), ensure it shows alongside existing WinPopups, and ensure the auto-dismiss timing does not delay or block the existing Rewards modal timing."
         },
         {
-          "path": "frontend/src/hooks/useMessages.ts",
+          "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Switch admin editor fetching to use the backend capability that returns the full list (use getAllMessages instead of getUnlockedMessages) while keeping admin-gated query enablement. Verify the component's usage instructions before implementing."
+          "description": "Add a small, reusable animation/utility class for the love-message overlay (e.g., fade/scale in/out) to keep the popup readable over the game UI with appropriate contrast and responsive sizing."
         }
       ]
     },
     {
-      "id": "REQ-3",
-      "summary": "Make non-admin access explicit in the UI and surface actionable error messages for owner mutations.",
+      "id": "REQ-2",
+      "summary": "Create a reusable love-message win popup component and wire it into the game win flow with proper state reset for Play Again and Back to Menu.",
       "acceptanceCriteria": [
-        "If a logged-in user is not an admin, the app shows an English user-facing message indicating that content management is owner-only (instead of silently hiding all editing capabilities with no explanation).",
-        "If add/update operations fail (e.g., due to authorization), the UI displays an English error message that helps the user understand what went wrong (not just a generic failure).",
-        "No changes are made to immutable paths listed in SYSTEM_CONTEXT (e.g., frontend/src/hooks/useActor.ts, useInternetIdentity.ts(x), and frontend/src/components/ui)."
+        "A dedicated component exists for the love-message popup (instead of inline one-off markup) and is rendered from the game win flow.",
+        "Clicking “Play Again” and “Back to Menu” clears/does not leave behind any visible love-message popup state.",
+        "Triggering multiple wins across different games shows the popup each time (no stale message/state)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/owner/OwnerEditorPanel.tsx",
-          "operation": "modify",
-          "description": "Adjust the panel gating so that authenticated non-admin users see an explicit owner-only access message (e.g., an access-denied dialog/notice) instead of returning null. Keep admin users’ current management UI unchanged. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/owner/OwnerAccessDeniedDialog.tsx",
+          "path": "frontend/src/components/game/WinLoveMessagePopup.tsx",
           "operation": "create",
-          "description": "Add a small owner-access explanation UI (English) for authenticated non-admin users (e.g., dialog or inline notice) that clarifies content management is owner-only and suggests logging in as the owner account. Verify the component's usage instructions before implementing."
+          "description": "Create a reusable WinLoveMessagePopup component that renders a fixed overlay message (English text) with optional randomized sweet-message selection, uses an internal timer (e.g., 2–4 seconds) to auto-dismiss via onDismiss, and uses pointer-events-none so it never requires/consumes user interaction."
         },
         {
-          "path": "frontend/src/utils/humanizeBackendError.ts",
-          "operation": "create",
-          "description": "Create a helper to convert common backend trap/errors (e.g., Unauthorized / role errors / actor not available) into actionable, user-friendly English messages suitable for toasts and inline form errors. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/usePictures.ts",
+          "path": "frontend/src/components/valentine/sections/GameSection.tsx",
           "operation": "modify",
-          "description": "Use the new error-humanizing helper in picture mutations (add/update/delete/reorder) so authorization failures and other common failures show actionable English messages in toasts. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useMessages.ts",
-          "operation": "modify",
-          "description": "Use the new error-humanizing helper in message mutations (add/update/delete/reorder) so authorization failures and other common failures show actionable English messages in toasts. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/owner/ImageUploadDialog.tsx",
-          "operation": "modify",
-          "description": "When add/update picture fails, display an actionable English error using the error-humanizing helper (instead of raw error.message) in the dialog’s inline error area. Verify the component's usage instructions before implementing."
+          "description": "Wire WinLoveMessagePopup into the win-handling flow: add state for visibility/message key, render it with a stable key per win so consecutive wins always retrigger, and clear its state in startGame, handlePlayAgain, and handleBackToMenu to prevent stale UI."
         }
       ]
     }

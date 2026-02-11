@@ -1,74 +1,51 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-07T09:43:54.980Z",
+  "generatedAt": "2026-02-11T11:20:12.235Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
+    "total": 2,
     "implemented": 2,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Fix backend authorization/bootstrap so the intended owner account can successfully use admin-only endpoints to add/update/delete/reorder pictures and messages.",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-2",
-        "summary": "Add explicit backend query endpoints for admins to fetch all pictures and all messages, and update the Owner Editor Panel data hooks to use these endpoints (instead of using unlocked-content queries intended for regular users).",
+        "summary": "When a player wins any mini-game, show a short “sweet love message” popup overlay in addition to the existing win celebration effects (and before/alongside the Rewards modal). The popup must appear for both first-time wins and repeat wins, and it must automatically dismiss after a short duration (e.g., 2–4 seconds) without requiring user interaction.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/usePictures.ts",
-          "frontend/src/hooks/useMessages.ts"
+          "frontend/src/components/valentine/sections/GameSection.tsx",
+          "frontend/src/index.css"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/usePictures.ts",
-          "frontend/src/hooks/useMessages.ts"
+          "frontend/src/components/valentine/sections/GameSection.tsx",
+          "frontend/src/index.css"
         ]
       },
       {
-        "id": "REQ-3",
-        "summary": "Improve frontend UX for the owner editing flow so that if a user is authenticated but not an admin, the UI clearly indicates they do not have access to manage content, and mutation failures surface actionable error messages.",
+        "id": "REQ-2",
+        "summary": "Add a reusable UI implementation for the win love-message popup (new component) and wire it into the win-handling flow in the game section so it resets correctly when the user plays again or returns to the menu.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/owner/OwnerEditorPanel.tsx",
-          "frontend/src/components/owner/OwnerAccessDeniedDialog.tsx",
-          "frontend/src/utils/humanizeBackendError.ts",
-          "frontend/src/hooks/usePictures.ts",
-          "frontend/src/hooks/useMessages.ts",
-          "frontend/src/components/owner/ImageUploadDialog.tsx"
+          "frontend/src/components/game/WinLoveMessagePopup.tsx",
+          "frontend/src/components/valentine/sections/GameSection.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/owner/OwnerEditorPanel.tsx",
-          "frontend/src/components/owner/OwnerAccessDeniedDialog.tsx",
-          "frontend/src/utils/humanizeBackendError.ts",
-          "frontend/src/hooks/usePictures.ts",
-          "frontend/src/hooks/useMessages.ts",
-          "frontend/src/components/owner/ImageUploadDialog.tsx"
+          "frontend/src/components/game/WinLoveMessagePopup.tsx",
+          "frontend/src/components/valentine/sections/GameSection.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
-    "frontend/src/components/owner/ImageUploadDialog.tsx",
-    "frontend/src/components/owner/OwnerAccessDeniedDialog.tsx",
-    "frontend/src/components/owner/OwnerEditorPanel.tsx",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useMessages.ts",
-    "frontend/src/hooks/usePictures.ts",
-    "frontend/src/utils/humanizeBackendError.ts",
+    "frontend/src/components/game/WinLoveMessagePopup.tsx",
+    "frontend/src/components/valentine/sections/GameSection.tsx",
+    "frontend/src/index.css",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

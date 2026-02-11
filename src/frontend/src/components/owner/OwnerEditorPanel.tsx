@@ -3,10 +3,7 @@ import { useIsCallerAdmin } from '@/hooks/useAuthz';
 import { useInternetIdentity } from '@/hooks/useInternetIdentity';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, Image, MessageCircle, Cake } from 'lucide-react';
-import PicturesEditor from './PicturesEditor';
-import MessagesEditor from './MessagesEditor';
+import { Settings } from 'lucide-react';
 import TreatsEditor from './TreatsEditor';
 import OwnerAccessDeniedDialog from './OwnerAccessDeniedDialog';
 
@@ -58,33 +55,11 @@ export default function OwnerEditorPanel() {
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-2xl overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>Manage Content</SheetTitle>
+          <SheetTitle>Manage Treats</SheetTitle>
         </SheetHeader>
-        <Tabs defaultValue="pictures" className="mt-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="pictures" className="gap-2">
-              <Image className="w-4 h-4" />
-              Pictures
-            </TabsTrigger>
-            <TabsTrigger value="messages" className="gap-2">
-              <MessageCircle className="w-4 h-4" />
-              Messages
-            </TabsTrigger>
-            <TabsTrigger value="treats" className="gap-2">
-              <Cake className="w-4 h-4" />
-              Treats
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="pictures" className="mt-6">
-            <PicturesEditor />
-          </TabsContent>
-          <TabsContent value="messages" className="mt-6">
-            <MessagesEditor />
-          </TabsContent>
-          <TabsContent value="treats" className="mt-6">
-            <TreatsEditor />
-          </TabsContent>
-        </Tabs>
+        <div className="mt-6">
+          <TreatsEditor />
+        </div>
       </SheetContent>
     </Sheet>
   );

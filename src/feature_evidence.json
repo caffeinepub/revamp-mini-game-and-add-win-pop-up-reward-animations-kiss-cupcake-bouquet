@@ -2,11 +2,32 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-explicit-backend-query-endpoints-for-admins-to-fetch-all-pictures-and-all-messages-and-update-the-owner-editor-panel-data-hooks-to-use-these-endpoints-instead-of-using-unlocked-content-queries-intended-for-regular-users",
-      "featureTitle": "Add explicit backend query endpoints for admins to fetch all pictures and all messages, and update the Owner Editor Panel data hooks to use these endpoints (instead of using unlocked-content queries intended for regular users).",
+      "featureId": "feature-when-a-player-wins-any-mini-game-show-a-short-sweet-love-message-popup-overlay-in-addition-to-the-existing-win-celebration-effects-and-before-alongside-the-rewards-modal-the-popup-must-appear-for-both-first-time-wins-and-repeat-wins-and-it-must-automatically-dismiss-after-a-short-duration-e-g-2-4-seconds-without-requiring-user-interaction",
+      "featureTitle": "When a player wins any mini-game, show a short “sweet love message” popup overlay in addition to the existing win celebration effects (and before/alongside the Rewards modal). The popup must appear for both first-time wins and repeat wins, and it must automatically dismiss after a short duration (e.g., 2–4 seconds) without requiring user interaction.",
       "files": [
-        "frontend/src/hooks/useMessages.ts",
-        "frontend/src/hooks/usePictures.ts"
+        "frontend/src/components/valentine/sections/GameSection.tsx",
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-reusable-ui-implementation-for-the-win-love-message-popup-new-component-and-wire-it-into-the-win-handling-flow-in-the-game-section-so-it-resets-correctly-when-the-user-plays-again-or-returns-to-the-menu",
+      "featureTitle": "Add a reusable UI implementation for the win love-message popup (new component) and wire it into the win-handling flow in the game section so it resets correctly when the user plays again or returns to the menu.",
+      "files": [
+        "frontend/src/components/game/WinLoveMessagePopup.tsx",
+        "frontend/src/components/valentine/sections/GameSection.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -19,31 +40,6 @@
       ],
       "testIds": [
         "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-improve-frontend-ux-for-the-owner-editing-flow-so-that-if-a-user-is-authenticated-but-not-an-admin-the-ui-clearly-indicates-they-do-not-have-access-to-manage-content-and-mutation-failures-surface-actionable-error-messages",
-      "featureTitle": "Improve frontend UX for the owner editing flow so that if a user is authenticated but not an admin, the UI clearly indicates they do not have access to manage content, and mutation failures surface actionable error messages.",
-      "files": [
-        "frontend/src/components/owner/ImageUploadDialog.tsx",
-        "frontend/src/components/owner/OwnerAccessDeniedDialog.tsx",
-        "frontend/src/components/owner/OwnerEditorPanel.tsx",
-        "frontend/src/hooks/useMessages.ts",
-        "frontend/src/hooks/usePictures.ts",
-        "frontend/src/utils/humanizeBackendError.ts"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
       ],
       "confidence": "high"
     }

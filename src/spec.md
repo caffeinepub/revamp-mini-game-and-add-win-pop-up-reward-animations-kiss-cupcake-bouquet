@@ -1,11 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Restore owner/admin content management so the intended owner can reliably add, edit, delete, and reorder pictures and messages without unauthorized errors.
+**Goal:** Show a short sweet love-message popup overlay whenever the player wins any mini-game, without disrupting the existing win/rewards flow.
 
 **Planned changes:**
-- Fix backend authorization/bootstrap so the intended owner account is recognized as admin and can use admin-only mutations for pictures and messages.
-- Add admin-only backend query endpoints to fetch the full list of pictures and messages, and update the Owner Editor Panel hooks to use these admin queries.
-- Improve owner editing UX: clearly message authenticated non-admin users that content management is owner-only, and show actionable error messages when mutations fail.
+- Add a reusable love-message popup overlay component (composed from existing UI components, without editing files under `frontend/src/components/ui`).
+- Wire the popup into the win-handling flow for all 5 mini-games so it appears on every win (first-time and repeat), alongside existing win celebration effects and before/alongside the Rewards modal.
+- Auto-dismiss the popup after a short duration (about 2–4 seconds) and ensure popup state resets/clears on “Play Again” and “Back to Menu” to avoid stale UI.
 
-**User-visible outcome:** The intended owner can load all existing pictures/messages in the editor and successfully add/update/delete/reorder them; non-admin users see clear “owner-only” messaging and meaningful errors when an action is unauthorized.
+**User-visible outcome:** When the player wins any mini-game, they briefly see a readable sweet love message popup on top of the game, which disappears automatically and does not block the Rewards modal or replay/menu navigation.

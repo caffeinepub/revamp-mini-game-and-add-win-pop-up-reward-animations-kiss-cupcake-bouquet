@@ -3,24 +3,22 @@
   "projectStateVersion": 3,
   "summary": "New project",
   "architectural_notes": [],
-  "known_issues": [
-    "Users are not able to add pictures or messages."
-  ],
-  "isFixRequest": true,
+  "known_issues": [],
+  "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-add-explicit-backend-query-endpoints-for-admins-to-fetch-all-pictures-and-all-messages-and-update-the-owner-editor-panel-data-hooks-to-use-these-endpoints-instead-of-using-unlocked-content-queries-intended-for-regular-users",
-      "title": "Add explicit backend query endpoints for admins to fetch all pictures and all messages, and update the Owner Editor Panel data hooks to use these endpoints (instead of using unlocked-content queries intended for regular users).",
+      "id": "feature-when-a-player-wins-any-mini-game-show-a-short-sweet-love-message-popup-overlay-in-addition-to-the-existing-win-celebration-effects-and-before-alongside-the-rewards-modal-the-popup-must-appear-for-both-first-time-wins-and-repeat-wins-and-it-must-automatically-dismiss-after-a-short-duration-e-g-2-4-seconds-without-requiring-user-interaction",
+      "title": "When a player wins any mini-game, show a short “sweet love message” popup overlay in addition to the existing win celebration effects (and before/alongside the Rewards modal). The popup must appear for both first-time wins and repeat wins, and it must automatically dismiss after a short duration (e.g., 2–4 seconds) without requiring user interaction.",
       "reqIds": [
-        "REQ-2"
+        "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-improve-frontend-ux-for-the-owner-editing-flow-so-that-if-a-user-is-authenticated-but-not-an-admin-the-ui-clearly-indicates-they-do-not-have-access-to-manage-content-and-mutation-failures-surface-actionable-error-messages",
-      "title": "Improve frontend UX for the owner editing flow so that if a user is authenticated but not an admin, the UI clearly indicates they do not have access to manage content, and mutation failures surface actionable error messages.",
+      "id": "feature-add-a-reusable-ui-implementation-for-the-win-love-message-popup-new-component-and-wire-it-into-the-win-handling-flow-in-the-game-section-so-it-resets-correctly-when-the-user-plays-again-or-returns-to-the-menu",
+      "title": "Add a reusable UI implementation for the win love-message popup (new component) and wire it into the win-handling flow in the game section so it resets correctly when the user plays again or returns to the menu.",
       "reqIds": [
-        "REQ-3"
+        "REQ-2"
       ],
       "version": 1
     }
@@ -28,20 +26,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Enable users to add/upload pictures and add/send messages",
+      "summary": "Show a sweet love message popup when the player wins the game",
       "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-2",
-      "summary": "Fix backend authorization/bootstrap so the intended owner account can successfully use admin-only endpoints to add/update/delete/reorder pictures and messages.",
-      "reqIds": [
-        "REQ-1"
-      ],
       "status": "pending"
     }
   ],
-  "projectName": "Fix owner content management so pictures and messages can be added",
+  "projectName": "Show a sweet love message popup when the player wins a mini-game",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }
